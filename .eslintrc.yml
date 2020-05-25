@@ -10,6 +10,7 @@ extends:
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
+  React: writable
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -22,3 +23,5 @@ plugins:
 rules:
   prettier/prettier:
     - error
+  react/react-in-jsx-scope: off
+  react/jsx-filename-extension: off
