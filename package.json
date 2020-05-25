@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "format:check": "prettier --list-different \"{components,pages,test}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:write": "prettier --write \"{components,pages,test}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
     "next": "9.4.2",
