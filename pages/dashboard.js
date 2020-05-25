@@ -1,13 +1,12 @@
-import Link from 'next/link'
+import Link from "next/link";
+import Layout from "../components/Layout";
 
-export default function Dashboard() {
-    return (
-        <>
-            <h2>
-                <Link href="/training-sessions/new">
-                    <a>Insert training session</a>
-                </Link>
-            </h2>
-        </>
-    )
-}
+const Dashboard = () => (
+  <Layout>
+    <Link href='/training-sessions/new'>
+      <h2 className='title'> Insert training session</h2>
+    </Link>
+  </Layout>
+);
+
+export default Dashboard;

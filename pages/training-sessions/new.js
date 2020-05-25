@@ -1,15 +1,16 @@
-import Link from 'next/link'
-import TrainingSessionForm from '../../components/trainingSessionForm'
-
+import Link from "next/link";
+import TrainingSessionForm from "../../components/trainingSessionForm";
+import Layout from "../../components/Layout";
 
 export default function New() {
-    return (
-        <div className="container">
-            <Link href="/dashboard">
-                <a>Return to Dashboard</a>
-            </Link>
-            <TrainingSessionForm />
-
-        </div>
-    )
+  return (
+    <Layout>
+      <div className='container'>
+        <Link href='/dashboard'>
+          <a className='subtitle is-link'>Return to Dashboard</a>
+        </Link>
+        <TrainingSessionForm />
+      </div>
+    </Layout>
+  );
 }
