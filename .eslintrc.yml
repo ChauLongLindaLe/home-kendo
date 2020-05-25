@@ -6,6 +6,7 @@ env:
 extends:
   - 'plugin:react/recommended'
   - airbnb
+  - prettier
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
@@ -17,4 +18,7 @@ parserOptions:
 plugins:
   - react
   - jest
-rules: {}
+  - prettier
+rules:
+  prettier/prettier:
+    - error
