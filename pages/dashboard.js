@@ -3,8 +3,8 @@ import Layout from "../components/Layout";
 
 const Dashboard = () => (
   <Layout>
-    <Link href='/training-sessions/new'>
-      <h2 className='title'> Insert training session</h2>
+    <Link href="/training-sessions/new">
+      <h2 className="title"> Insert training session</h2>
     </Link>
   </Layout>
 );
