@@ -9,7 +9,6 @@ export default class TrainingSessionForm extends React.Component {
       isLoading: false,
       error: null
     };
-    //
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -19,14 +18,25 @@ export default class TrainingSessionForm extends React.Component {
   }
 
   handleSubmit(event) {
+    const { title, duration } = this.state;
     event.preventDefault();
     this.setState({ isLoading: true });
-    fetch("/api/training-sessions")
+    fetch("/api/training-sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ title, duration })
+    })
       .then((response) => {
         if (response.ok) {
-          return Router.push("/training-sessions");
+          return response.json();
         }
         throw response;
+      })
+      .then(() => {
+        Router.push("/training-sessions");
+        this.setState({ isLoading: false });
       })
       .catch((error) => this.setState({ error, isLoading: false }));
   }
