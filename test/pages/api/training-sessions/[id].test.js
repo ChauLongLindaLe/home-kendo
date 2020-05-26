@@ -6,6 +6,7 @@ import { runTestServer, stopTestServer } from "../../../utils/server";
 describe("/api/training-sessions/[id]", () => {
   let server;
   let baseUrl;
+  const trainingSessionRepository = new TrainingSessionRepository();
 
   beforeAll(async (done) => {
     [server, baseUrl] = await runTestServer(trainingSessions);
@@ -29,7 +30,7 @@ describe("/api/training-sessions/[id]", () => {
 
   describe("GET", () => {
     it("returns the training session", async () => {
-      const trainingSession = new TrainingSessionRepository().create({
+      const trainingSession = trainingSessionRepository.create({
         title: "fish",
         duration: "cheese",
       });
@@ -58,19 +59,58 @@ describe("/api/training-sessions/[id]", () => {
 
   describe("DELETE", () => {
     it("returns 204 no content", async () => {
-      const url = `${baseUrl}?id=123`;
+      const trainingSession = trainingSessionRepository.create({
+        title: "fish",
+        duration: "cheese",
+      });
+
+      const url = `${baseUrl}?id=${trainingSession.id}`;
       const response = await fetch(url, { method: "DELETE" });
 
       expect(response.status).toBe(204);
+
+      const deletedTrainingSession = trainingSessionRepository.find(
+        trainingSession.id
+      );
+      expect(deletedTrainingSession).toBe(undefined);
     });
   });
 
   describe("PATCH", () => {
     it("returns 204 no content", async () => {
-      const url = `${baseUrl}?id=123`;
-      const response = await fetch(url, { method: "PATCH" });
+      const trainingSession = trainingSessionRepository.create({
+        title: "fish",
+        duration: "cheese",
+      });
+
+      const url = `${baseUrl}?id=${trainingSession.id}`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        body: JSON.stringify({ duration: "tomato" }),
+        headers: { "Content-Type": "application/json" },
+      });
 
       expect(response.status).toBe(204);
+      expect(
+        trainingSessionRepository.find(trainingSession.id).duration
+      ).toEqual("tomato");
+    });
+
+    describe("when missing content type header", () => {
+      it("returns 400 bad request", async () => {
+        const trainingSession = trainingSessionRepository.create({
+          title: "fish",
+          duration: "cheese",
+        });
+
+        const url = `${baseUrl}?id=${trainingSession.id}`;
+        const response = await fetch(url, {
+          method: "PATCH",
+          body: JSON.stringify({ title: "fish", duration: "1 month" }),
+        });
+
+        expect(response.status).toBe(400);
+      });
     });
   });
 });
