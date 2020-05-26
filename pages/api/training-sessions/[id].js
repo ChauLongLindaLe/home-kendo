@@ -1,19 +1,22 @@
+import TrainingSessionRepository from "../../../src/trainingSessionRepository";
+
 export default (req, res) => {
   const {
     query: { id },
     method,
   } = req;
-  const fakeTrainingSession = {
-    id,
-    title: "blobby",
-    duration: "1 week",
-  };
 
   switch (method) {
     case "GET":
-      res.status(200).json(fakeTrainingSession);
+      /* eslint-disable no-case-declarations */
+      const trainingSession = new TrainingSessionRepository().find(id);
+      /* eslint-enable no-case-declarations */
+      if (trainingSession) {
+        res.status(200).json(trainingSession);
+      } else res.status(404).end();
       break;
     case "DELETE":
+      new TrainingSessionRepository().delete(id);
       res.status(204).end();
       break;
     case "PATCH":

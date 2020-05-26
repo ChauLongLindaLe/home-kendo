@@ -1,5 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import trainingSessions from "../../../../pages/api/training-sessions/[id]";
+import TrainingSessionRepository from "../../../../src/trainingSessionRepository";
 import { runTestServer, stopTestServer } from "../../../utils/server";
 
 describe("/api/training-sessions/[id]", () => {
@@ -11,6 +12,16 @@ describe("/api/training-sessions/[id]", () => {
     done();
   });
 
+  beforeEach(() => {
+    const repository = new TrainingSessionRepository();
+    repository.reset();
+  });
+
+  afterEach(() => {
+    const repository = new TrainingSessionRepository();
+    repository.reset();
+  });
+
   afterAll((done) => {
     stopTestServer(server);
     done();
@@ -18,15 +29,29 @@ describe("/api/training-sessions/[id]", () => {
 
   describe("GET", () => {
     it("returns the training session", async () => {
-      const url = `${baseUrl}?id=123`;
+      const trainingSession = new TrainingSessionRepository().create({
+        title: "fish",
+        duration: "cheese",
+      });
+
+      const url = `${baseUrl}?id=${trainingSession.id}`;
       const response = await fetch(url, { method: "GET" });
-      const trainingSession = await response.json();
+      const session = await response.json();
 
       expect(response.status).toBe(200);
-      expect(trainingSession).toMatchObject({
-        id: "123",
-        title: expect.any(String),
-        duration: expect.any(String),
+      expect(session).toMatchObject({
+        id: trainingSession.id,
+        title: "fish",
+        duration: "cheese",
+      });
+    });
+
+    describe("when session does not exist", () => {
+      it("returns 404 not found", async () => {
+        const url = `${baseUrl}?id=blobby`;
+        const response = await fetch(url, { method: "GET" });
+
+        expect(response.status).toBe(404);
       });
     });
   });

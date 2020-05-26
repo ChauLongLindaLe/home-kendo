@@ -1,19 +1,21 @@
+import TrainingSessionRepository from "../../src/trainingSessionRepository";
+
 export default (req, res) => {
   const { method } = req;
-  const fakeTrainingSessions = [
-    { id: 1, title: "blobby", duration: "5 milliseconds" },
-    { id: 2, title: "bobbly", duration: "5 years" },
-    { id: 3, title: "linda", duration: "1 second" },
-    { id: 4, title: "lindor", duration: "1 week" },
-    { id: 5, title: "old warmface", duration: "5 days" },
-  ];
 
   switch (method) {
     case "POST":
-      res.status(201).end();
+      if (req.headers["content-type"] === "application/json") {
+        /* eslint-disable no-case-declarations */
+        const trainingSession = new TrainingSessionRepository().create(
+          req.body
+        );
+        /* eslint-enable no-case-declarations */
+        res.status(200).json(trainingSession);
+      } else res.status(400).end();
       break;
     case "GET":
-      res.status(200).json(fakeTrainingSessions);
+      res.status(200).json(new TrainingSessionRepository().findAll());
       break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
