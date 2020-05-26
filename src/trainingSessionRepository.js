@@ -39,6 +39,13 @@ TrainingSessionRepository.prototype = {
     });
     return sessions;
   },
+  find(id) {
+    const sessions = loadData();
+
+    if (!sessions[id]) return undefined;
+
+    return this.formatSession(id, sessions[id]);
+  },
   delete(id) {
     const sessions = loadData();
     delete sessions[id];
@@ -55,12 +62,16 @@ TrainingSessionRepository.prototype = {
     writeToFile(JSON.stringify(sessions));
     return sessionWithId;
   },
-  find(id) {
+  update(id, data) {
     const sessions = loadData();
+    const trainingSession = sessions[id];
 
-    if (!sessions[id]) return undefined;
+    if (!trainingSession) return undefined;
 
-    return this.formatSession(id, sessions[id]);
+    const updatedSession = Object.assign(trainingSession, data);
+    sessions[id] = updatedSession;
+    writeToFile(JSON.stringify(sessions));
+    return this.formatSession(id, updatedSession);
   },
   formatSession(id, data) {
     return { ...data, id };

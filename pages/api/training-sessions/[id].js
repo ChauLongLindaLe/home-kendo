@@ -20,7 +20,10 @@ export default (req, res) => {
       res.status(204).end();
       break;
     case "PATCH":
-      res.status(204).end();
+      if (req.headers["content-type"] === "application/json") {
+        new TrainingSessionRepository().update(id, req.body);
+        res.status(204).end();
+      } else res.status(400).end();
       break;
     default:
       res.setHeader("Allow", ["DELETE", "GET", "PATCH"]);
