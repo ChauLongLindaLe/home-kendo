@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Layout from "./layout";
 
 export default class SessionsList extends React.Component {
@@ -9,15 +8,38 @@ export default class SessionsList extends React.Component {
       isLoading: false,
       error: null
     };
+    this.handleDelete = this.handleDelete.bind(this);
+    this.retrieveSessions = this.retrieveSessions.bind(this);
   }
 
   componentDidMount() {
+    this.retrieveSessions();
+  }
+
+  retrieveSessions() {
     this.setState({ isLoading: true });
     fetch("/api/training-sessions")
       .then((response) => response.json())
       .then((data) =>
-        this.setState({ trainingSessions: data, isLoading: false })
+        this.setState({
+          trainingSessions: data,
+          isLoading: false
+        })
       )
+      .catch((error) => this.setState({ error, isLoading: false }));
+  }
+
+  handleDelete(id) {
+    this.setState({ isLoading: true });
+    fetch(`/api/training-sessions/${id}`, {
+      method: "DELETE"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        this.retrieveSessions();
+      })
       .catch((error) => this.setState({ error, isLoading: false }));
   }
 
@@ -33,6 +55,12 @@ export default class SessionsList extends React.Component {
             {trainingSessions.map((session) => (
               <li key={session.id}>
                 <p>{`${session.duration} - ${session.title}`}</p>
+                <button
+                  type="button"
+                  onClick={() => this.handleDelete(session.id)}
+                >
+                  <i className="fas fa-dumpster-fire" />
+                </button>
               </li>
             ))}
           </ul>
