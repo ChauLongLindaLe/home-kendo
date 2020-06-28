@@ -9,14 +9,11 @@ const Layout = (props) => (
   <>
     <Head>
       <title>Kendo</title>
+      <script src="https://use.fontawesome.com/3ce7a53e3d.js" />
       <link rel="icon" href="/favicon.ico" />
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
-      />
-      <script
-        defer
-        src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
       />
     </Head>
     <div className="section">{props.children}</div>
