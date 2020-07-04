@@ -5,16 +5,18 @@ export default class TrainingSessionForm extends React.Component {
       title: "",
       duration: "",
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = ({ target: { name, value } }) => {
+  handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
-    console.log(this.state);
-  };
+  }
 
-  handleSubmit = (event) => {
+  handleSubmit(event) {
     event.preventDefault();
-  };
+  }
+
   render() {
     return (
       <div className="section">
