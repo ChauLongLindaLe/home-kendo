@@ -4,11 +4,12 @@ export default class TrainingSessionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      duration: "",
+      title: props.title || "",
+      duration: props.duration || "",
       isLoading: false,
       error: null
     };
+    console.log(props)
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -21,17 +22,20 @@ export default class TrainingSessionForm extends React.Component {
     const { title, duration } = this.state;
     event.preventDefault();
     this.setState({ isLoading: true });
-    fetch("/api/training-sessions", {
-      method: "POST",
+    fetch(this.props.endpoint, {
+      method: this.props.httpMethod,
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ title, duration })
     })
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+        if(response.ok){
+          return
+        } 
+        // if (response.status === 200) {
+        //   return response.json();
+        // } else if (response.status === 204) return;
         throw response;
       })
       .then(() => {

@@ -18,7 +18,7 @@ export default function TrainingSessions({ trainingSessions, error }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let trainingSessions = [];
   let error = null;
 

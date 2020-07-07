@@ -1,6 +1,5 @@
 import Link from "next/link";
 import TrainingSessionForm from "../../components/trainingSessionForm";
-import "axios";
 import Layout from "../../components/layout";
 
 export default function New() {
@@ -11,7 +10,10 @@ export default function New() {
           <Link href="/dashboard">
             <p className="subtitle is-link">Return to Dashboard</p>
           </Link>
-          <TrainingSessionForm />
+          <TrainingSessionForm
+          httpMethod="POST"
+          endpoint="/api/training-sessions"
+          />
         </div>
       </Layout>
     </>
